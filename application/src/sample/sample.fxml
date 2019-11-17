@@ -1,8 +1,48 @@
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
+<?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<GridPane fx:controller="sample.Controller"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane alignment="center" hgap="10" maxHeight="720.0" maxWidth="1100.0" prefHeight="720.0" prefWidth="1280.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <SplitPane dividerPositions="0.34153005464480873" prefHeight="720.0" prefWidth="1100.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <TextField fx:id="inputSpaceHeight" layoutX="14.0" layoutY="35.0" prefHeight="25.0" prefWidth="163.0" promptText="Height of space" />
+                  <TextField fx:id="inputSpaceWidth" layoutX="14.0" layoutY="72.0" prefHeight="25.0" prefWidth="163.0" promptText="Width of space" />
+                  <Label layoutX="129.0" layoutY="4.0" text="Generate space">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="237.0" layoutY="72.0" mnemonicParsing="false" onAction="#generateSpace" prefHeight="25.0" prefWidth="102.0" text="Generate" />
+                  <Separator layoutX="-8.0" layoutY="158.0" prefHeight="0.0" prefWidth="389.0" />
+                  <TextField fx:id="inputSeedsAmount" layoutX="14.0" layoutY="108.0" prefHeight="25.0" prefWidth="163.0" promptText="Amount of grain seeds" />
+               </children></AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <AnchorPane fx:id="spaceDisplay" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
+               </children></AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
 </GridPane>

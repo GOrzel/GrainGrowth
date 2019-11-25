@@ -1,7 +1,6 @@
 package sample.structures;
 
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Material;
 import javafx.scene.paint.Paint;
 import sample.exceptions.NoBoundaryConditionSet;
 import sample.exceptions.WrongCoordinatesException;
@@ -9,11 +8,11 @@ import sample.utils.BoundaryConditions;
 import sample.utils.Neighbourhoods;
 import sample.utils.SimulationParameters;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
+import static sample.utils.SpaceUtils.copyArray;
 import static sample.utils.SpaceUtils.generateRandomColor;
+import static sample.utils.SpaceUtils.getRandomNumber;
 
 /**
  * Created by User on 2019-11-16.
@@ -37,7 +36,7 @@ public class Space {
         }
         prepareSeeds(seedsAmount);
         //For the RESET function
-        this.originState = cells.clone();
+        this.originState = copyArray(cells);
     }
 
     public AnchorPane render() {
@@ -77,20 +76,55 @@ public class Space {
         }
     }
 
-    public void nextStep(SimulationParameters params) throws Exception{
-        Cell[][] nextIteration = cells.clone();
+    public void nextStep(SimulationParameters params) throws Exception {
+        Cell nextIteration[][] = copyArray(cells);
+
+        HashMap<Paint, Integer> neighbours;
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                getNeighbourhood(x,y,params);
+                if (cells[x][y].getBackgroundColor() == Cell.DEFAULT_COLOR) {
+                    neighbours = getNeighbourGrainsCounted(x, y, params);
+                    nextIteration[x][y].setBackgroundColor(getMostPopularColor(neighbours));
+                }
             }
         }
+        this.cells = nextIteration;
     }
 
-    private ArrayList<Cell> getNeighbourhood(int xPos, int yPos, SimulationParameters params) throws WrongCoordinatesException, NoBoundaryConditionSet{
+    private Paint getMostPopularColor(HashMap<Paint, Integer> neighbours) {
+        int max = 0;
+        ArrayList<Paint> candidates = new ArrayList<>();
+        for (Integer count : neighbours.values())
+            if (count > max) max = count;
+
+        for (Map.Entry<Paint, Integer> a : neighbours.entrySet()) {
+            if (a.getValue() >= max)
+                candidates.add(a.getKey());
+        }
+        if (candidates.size() == 0) return Cell.DEFAULT_COLOR;
+        return candidates.get(getRandomNumber(candidates.size()));
+    }
+
+    private HashMap<Paint, Integer> getNeighbourGrainsCounted(int x, int y, SimulationParameters params) throws Exception {
+        HashMap<Paint, Integer> neighboursCounted = new HashMap<>();
+        ArrayList<Cell> neighbours;
+
+        neighbours = getNeighbourhoodGrains(x, y, params);
+        neighbours.forEach(
+                a -> neighboursCounted.putIfAbsent(a.getBackgroundColor(), 0));
+        neighbours.forEach(
+                a -> neighboursCounted.put(a.getBackgroundColor(), neighboursCounted.get(a.getBackgroundColor()) + 1));
+        return neighboursCounted;
+    }
+
+    private ArrayList<Cell> getNeighbourhoodGrains(int xPos, int yPos, SimulationParameters params) throws WrongCoordinatesException, NoBoundaryConditionSet {
         ArrayList<Cell> neighbours = new ArrayList<>();
-        for(Neighbourhoods.Direction direction : params.getNeighbourhood().getDirections()){
-            neighbours.add(getNeighbour(xPos, yPos, direction, params.getBoundaryCondition()));
+        Cell neighbour;
+
+        for (Neighbourhoods.Direction direction : params.getNeighbourhood().getDirections()) {
+            neighbour = getNeighbour(xPos, yPos, direction, params.getBoundaryCondition());
+            if (neighbour.isGrain()) neighbours.add(neighbour);
         }
         return neighbours;
     }
@@ -100,19 +134,19 @@ public class Space {
             case N:
                 return getCell(xPos, yPos + 1, boundaryCondition);
             case NE:
-                return getCell(xPos + 1, yPos + 1, boundaryCondition);
+                return getCell(xPos - 1, yPos + 1, boundaryCondition);
             case E:
-                return getCell(xPos + 1, yPos, boundaryCondition);
+                return getCell(xPos - 1, yPos, boundaryCondition);
             case SE:
-                return getCell(xPos + 1, yPos - 1, boundaryCondition);
+                return getCell(xPos - 1, yPos - 1, boundaryCondition);
             case S:
                 return getCell(xPos, yPos - 1, boundaryCondition);
             case SW:
-                return getCell(xPos - 1, yPos - 1, boundaryCondition);
+                return getCell(xPos + 1, yPos - 1, boundaryCondition);
             case W:
-                return getCell(xPos - 1, yPos, boundaryCondition);
+                return getCell(xPos + 1, yPos, boundaryCondition);
             case NW:
-                return getCell(xPos - 1, yPos + 1, boundaryCondition);
+                return getCell(xPos + 1, yPos + 1, boundaryCondition);
             default:
                 return null;
         }
@@ -137,6 +171,10 @@ public class Space {
             default:
                 throw new NoBoundaryConditionSet("Unspecified boundary condition");
         }
+    }
+
+    public void reset(){
+        this.cells = copyArray(originState);
     }
 
 }

@@ -26,12 +26,13 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button layoutX="237.0" layoutY="72.0" mnemonicParsing="false" onAction="#generateSpace" prefHeight="25.0" prefWidth="102.0" text="Generate" />
+                  <Button layoutX="237.0" layoutY="35.0" mnemonicParsing="false" onAction="#generateSpace" prefHeight="25.0" prefWidth="102.0" text="Generate" />
                   <Separator layoutX="-8.0" layoutY="158.0" prefHeight="0.0" prefWidth="389.0" />
                   <TextField fx:id="inputSeedsAmount" layoutX="14.0" layoutY="108.0" prefHeight="25.0" prefWidth="163.0" promptText="Amount of grain seeds" />
                   <Button layoutX="151.0" layoutY="259.0" mnemonicParsing="false" onAction="#nextStep" text="Next Step" />
                   <ComboBox fx:id="selectNeighbourhood" layoutX="14.0" layoutY="182.0" prefHeight="25.0" prefWidth="163.0" promptText="Neighbourhood" />
                   <ComboBox fx:id="selectBoundaryCondition" layoutX="14.0" layoutY="223.0" prefHeight="25.0" prefWidth="163.0" promptText="Boundary Condition" />
+                  <Button layoutX="237.0" layoutY="108.0" mnemonicParsing="false" onAction="#resetSpace" prefHeight="25.0" prefWidth="102.0" text="Reset" />
                </children></AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <padding>

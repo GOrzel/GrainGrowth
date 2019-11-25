@@ -71,12 +71,18 @@ public class Controller {
         params.setNeighbourhood(neighbourhood);
         params.setBoundaryCondition(boundaryCondition);
 
-        space.nextStep(params);
+        this.space.nextStep(params);
+        renderView();
+    }
+
+    @FXML
+    private void resetSpace(){
+        this.space.reset();
         renderView();
     }
 
     private void renderView(){
         spaceDisplay.getChildren().clear();
-        spaceDisplay.getChildren().add(space.render());
+        spaceDisplay.getChildren().add(this.space.render());
     }
 }

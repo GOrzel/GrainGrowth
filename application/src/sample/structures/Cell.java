@@ -25,6 +25,10 @@ public class Cell {
         this.backgroundColor = backgroundColor;
     }
 
+    public Cell(Cell cell){
+        this.backgroundColor = cell.getBackgroundColor();
+    }
+
     public AnchorPane render() {
         AnchorPane cellRender = new AnchorPane();
         cellRender.setBackground(new Background(new BackgroundFill(this.backgroundColor, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -33,6 +37,10 @@ public class Cell {
 
     public boolean isEmpty(){
         return backgroundColor == DEFAULT_COLOR;
+    }
+
+    public boolean isGrain(){
+        return backgroundColor != DEFAULT_COLOR;
     }
 
     public Paint getBackgroundColor() {

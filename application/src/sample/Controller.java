@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -15,27 +17,26 @@ import java.util.stream.Collectors;
 public class Controller {
 
     private Space space;
+    private boolean doStop = false;
+
 
     @FXML
     private TextField inputSpaceHeight;
-    private int spaceHeight;
 
     @FXML
     private TextField inputSpaceWidth;
-    private int spaceWidth;
 
     @FXML
     private TextField inputSeedsAmount;
-    private int seedsAmount;
 
     @FXML
     private AnchorPane spaceDisplay;
 
     @FXML
     private void generateSpace() {
-        spaceHeight = Integer.parseInt(inputSpaceHeight.getText());
-        spaceWidth = Integer.parseInt(inputSpaceWidth.getText());
-        seedsAmount = Integer.parseInt(inputSeedsAmount.getText());
+        int spaceHeight = Integer.parseInt(inputSpaceHeight.getText());
+        int spaceWidth = Integer.parseInt(inputSpaceWidth.getText());
+        int seedsAmount = Integer.parseInt(inputSeedsAmount.getText());
         space = new Space(spaceHeight, spaceWidth, seedsAmount);
         renderView();
     }
@@ -76,12 +77,49 @@ public class Controller {
     }
 
     @FXML
-    private void resetSpace(){
+    private void resetSpace() {
+        stop();
         this.space.reset();
         renderView();
     }
 
-    private void renderView(){
+    @FXML
+    private void play() {
+        doStop = false;
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                while (!doStop) {
+                    runNextStep();
+                    try {
+                        Thread.sleep(250);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                return null;
+            }
+        };
+
+        new Thread(task).start();
+    }
+
+    private void runNextStep() {
+        Platform.runLater(() -> {
+            try {
+                nextStep();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    private synchronized void stop() {
+        this.doStop = true;
+    }
+
+    private void renderView() {
         spaceDisplay.getChildren().clear();
         spaceDisplay.getChildren().add(this.space.render());
     }

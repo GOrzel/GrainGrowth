@@ -47,7 +47,6 @@ public class Neighbourhoods {
         }
     }
 
-    //todo add random hex and random penta
     private static final Direction[] DIR_VON_NEUMANN = {Direction.N, Direction.E, Direction.S, Direction.W};
     private static final Direction[] DIR_MOORE = {Direction.NW, Direction.N, Direction.NE, Direction.E, Direction.SE, Direction.S, Direction.SW, Direction.W};
     private static final Direction[] DIR_HEXAGONAL_LEFT = {Direction.W, Direction.NW, Direction.N, Direction.E, Direction.SE, Direction.S};

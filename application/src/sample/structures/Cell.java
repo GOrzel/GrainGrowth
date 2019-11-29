@@ -13,7 +13,7 @@ import javafx.scene.paint.Paint;
  */
 public class Cell {
 
-    public static final Color DEFAULT_COLOR = Color.LIGHTGRAY;
+    public static final Paint DEFAULT_COLOR = Paint.valueOf(Color.LIGHTGRAY.toString());
 
     private Paint backgroundColor;
 
@@ -40,7 +40,7 @@ public class Cell {
     }
 
     public boolean isGrain(){
-        return backgroundColor != DEFAULT_COLOR;
+        return !backgroundColor.toString().equals(DEFAULT_COLOR.toString());
     }
 
     public Paint getBackgroundColor() {

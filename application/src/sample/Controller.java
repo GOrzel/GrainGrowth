@@ -3,14 +3,24 @@ package sample;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
+import sample.structures.Cell;
 import sample.structures.Space;
 import sample.utils.BoundaryConditions;
 import sample.utils.Neighbourhoods;
 import sample.utils.SimulationParameters;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -122,5 +132,21 @@ public class Controller {
     private void renderView() {
         spaceDisplay.getChildren().clear();
         spaceDisplay.getChildren().add(this.space.render());
+    }
+
+    @FXML
+    private void saveToCsv() throws IOException {
+        this.space.saveToCsv();
+    }
+
+    @FXML
+    private void loadFromCsv() throws IOException {
+        this.space.loadFromCsv();
+        renderView();
+    }
+
+    @FXML
+    private void saveToBitmap() throws IOException {
+        this.space.saveToBitmap();
     }
 }

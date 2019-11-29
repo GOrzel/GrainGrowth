@@ -1,5 +1,8 @@
 package sample.structures;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import sample.exceptions.NoBoundaryConditionSet;
@@ -8,11 +11,13 @@ import sample.utils.BoundaryConditions;
 import sample.utils.Neighbourhoods;
 import sample.utils.SimulationParameters;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
-import static sample.utils.SpaceUtils.copyArray;
-import static sample.utils.SpaceUtils.generateRandomColor;
-import static sample.utils.SpaceUtils.getRandomNumber;
+import static sample.utils.SpaceUtils.*;
 
 /**
  * Created by User on 2019-11-16.
@@ -83,7 +88,7 @@ public class Space {
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                if (cells[x][y].getBackgroundColor() == Cell.DEFAULT_COLOR) {
+                if (cells[x][y].getBackgroundColor().equals(Cell.DEFAULT_COLOR)) {
                     neighbours = getNeighbourGrainsCounted(x, y, params);
                     nextIteration[x][y].setBackgroundColor(getMostPopularColor(neighbours));
                 }
@@ -111,6 +116,7 @@ public class Space {
         ArrayList<Cell> neighbours;
 
         neighbours = getNeighbourhoodGrains(x, y, params);
+
         neighbours.forEach(
                 a -> neighboursCounted.putIfAbsent(a.getBackgroundColor(), 0));
         neighbours.forEach(
@@ -124,7 +130,9 @@ public class Space {
 
         for (Neighbourhoods.Direction direction : params.getNeighbourhood().getDirections()) {
             neighbour = getNeighbour(xPos, yPos, direction, params.getBoundaryCondition());
-            if (neighbour.isGrain()) neighbours.add(neighbour);
+            if (neighbour.isGrain()) {
+                neighbours.add(neighbour);
+            }
         }
         return neighbours;
     }
@@ -173,8 +181,27 @@ public class Space {
         }
     }
 
-    public void reset(){
+    public void reset() {
         this.cells = copyArray(originState);
+        this.height = this.cells[0].length;
+        this.width = this.cells.length;
     }
 
+    public void saveToCsv() throws IOException {
+        saveArrayToCsv(this.cells);
+    }
+
+    public void loadFromCsv() throws IOException {
+        this.cells = loadArrayFromCsv();
+        this.height = this.cells[0].length;
+        this.width = this.cells.length;
+
+    }
+
+    public void saveToBitmap() throws IOException{
+        WritableImage snapshot = this.render().snapshot(new SnapshotParameters(), null);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        File file = new File("bitmap.bmp");
+        ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", file);
+    }
 }

@@ -41,6 +41,9 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
+                  <Button layoutX="56.0" layoutY="347.0" mnemonicParsing="false" onAction="#saveToCsv" prefHeight="25.0" prefWidth="102.0" text="Export to csv" />
+                  <Button layoutX="186.0" layoutY="347.0" mnemonicParsing="false" onAction="#loadFromCsv" prefHeight="25.0" prefWidth="102.0" text="Load from csv" />
+                  <Button layoutX="56.0" layoutY="390.0" mnemonicParsing="false" onAction="#saveToBitmap" prefHeight="25.0" prefWidth="102.0" text="Export to bmp" />
                </children></AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <padding>

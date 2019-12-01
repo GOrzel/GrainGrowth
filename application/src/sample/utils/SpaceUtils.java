@@ -4,9 +4,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import sample.structures.Cell;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -68,6 +65,8 @@ public class SpaceUtils {
                 sb.append(",");
                 sb.append(cell.getBackgroundColor().toString());
                 sb.append(",");
+                sb.append(cell.getPhase());
+                sb.append(",");
                 br.write(sb.toString());
                 br.newLine();
             }
@@ -91,13 +90,18 @@ public class SpaceUtils {
             int posX = Integer.valueOf(attr[0]);
             int posY = Integer.valueOf(attr[1]);
             Paint color = Paint.valueOf(attr[2]);
+            int phase = Integer.valueOf(attr[3]);
 
-            cells[posX][posY] = new Cell(color);
+            cells[posX][posY] = new Cell(color, phase);
 
             line = br.readLine();
         }
 
         br.close();
         return cells;
+    }
+
+    public static boolean isInCircle(int r, int y, int x) {
+        return x * x + y * y <= r * r;
     }
 }

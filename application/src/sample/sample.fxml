@@ -27,23 +27,32 @@
                      </font>
                   </Label>
                   <Button layoutX="237.0" layoutY="35.0" mnemonicParsing="false" onAction="#generateSpace" prefHeight="25.0" prefWidth="102.0" text="Generate" />
-                  <Separator layoutX="-8.0" layoutY="156.0" prefHeight="0.0" prefWidth="389.0" />
+                  <Separator layoutX="-8.0" layoutY="193.0" prefHeight="0.0" prefWidth="389.0" />
                   <TextField fx:id="inputSeedsAmount" layoutX="14.0" layoutY="108.0" prefHeight="25.0" prefWidth="163.0" promptText="Amount of grain seeds" />
-                  <Button layoutX="237.0" layoutY="188.0" mnemonicParsing="false" onAction="#nextStep" prefHeight="25.0" prefWidth="102.0" text="Next Step" />
-                  <ComboBox fx:id="selectNeighbourhood" layoutX="14.0" layoutY="188.0" prefHeight="25.0" prefWidth="163.0" promptText="Neighbourhood" />
-                  <ComboBox fx:id="selectBoundaryCondition" layoutX="14.0" layoutY="229.0" prefHeight="25.0" prefWidth="163.0" promptText="Boundary Condition" />
-                  <Button layoutX="237.0" layoutY="229.0" mnemonicParsing="false" onAction="#resetSpace" prefHeight="25.0" prefWidth="102.0" text="Reset" />
-                  <Button layoutX="56.0" layoutY="293.0" mnemonicParsing="false" onAction="#play" prefHeight="25.0" prefWidth="102.0" text="Play" />
-                  <Button layoutX="186.0" layoutY="293.0" mnemonicParsing="false" onAction="#stop" prefHeight="25.0" prefWidth="102.0" text="Stop" />
-                  <Separator layoutX="1.0" layoutY="330.0" prefHeight="3.0" prefWidth="372.0" />
-                  <Label layoutX="131.0" layoutY="162.0" text="Run simulation">
+                  <Button layoutX="236.0" layoutY="220.0" mnemonicParsing="false" onAction="#nextStep" prefHeight="25.0" prefWidth="102.0" text="Next Step" />
+                  <ComboBox fx:id="selectNeighbourhood" layoutX="13.0" layoutY="220.0" prefHeight="25.0" prefWidth="163.0" promptText="Neighbourhood" />
+                  <ComboBox fx:id="selectBoundaryCondition" layoutX="13.0" layoutY="261.0" prefHeight="25.0" prefWidth="163.0" promptText="Boundary Condition" />
+                  <Button layoutX="236.0" layoutY="261.0" mnemonicParsing="false" onAction="#resetSpace" prefHeight="25.0" prefWidth="102.0" text="Reset" />
+                  <Button layoutX="55.0" layoutY="325.0" mnemonicParsing="false" onAction="#play" prefHeight="25.0" prefWidth="102.0" text="Play" />
+                  <Button layoutX="190.0" layoutY="325.0" mnemonicParsing="false" onAction="#stop" prefHeight="25.0" prefWidth="102.0" text="Stop" />
+                  <Separator layoutY="362.0" prefHeight="3.0" prefWidth="372.0" />
+                  <Label layoutX="130.0" layoutY="194.0" text="Run simulation">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button layoutX="56.0" layoutY="347.0" mnemonicParsing="false" onAction="#saveToCsv" prefHeight="25.0" prefWidth="102.0" text="Export to csv" />
-                  <Button layoutX="186.0" layoutY="347.0" mnemonicParsing="false" onAction="#loadFromCsv" prefHeight="25.0" prefWidth="102.0" text="Load from csv" />
-                  <Button layoutX="56.0" layoutY="390.0" mnemonicParsing="false" onAction="#saveToBitmap" prefHeight="25.0" prefWidth="102.0" text="Export to bmp" />
+                  <Button layoutX="60.0" layoutY="402.0" mnemonicParsing="false" onAction="#saveToCsv" prefHeight="25.0" prefWidth="102.0" text="Export to csv" />
+                  <Button layoutX="190.0" layoutY="402.0" mnemonicParsing="false" onAction="#loadFromCsv" prefHeight="25.0" prefWidth="102.0" text="Load from csv" />
+                  <Button layoutX="60.0" layoutY="445.0" mnemonicParsing="false" onAction="#saveToBitmap" prefHeight="25.0" prefWidth="102.0" text="Export to bmp" />
+                  <Label layoutX="157.0" layoutY="365.0" text="Export">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="inputInclusionsAmount" layoutX="13.0" layoutY="147.0" prefHeight="25.0" prefWidth="163.0" promptText="Amount of inclusions" />
+                  <TextField fx:id="inputMinRadius" layoutX="190.0" layoutY="147.0" prefHeight="25.0" prefWidth="79.0" promptText="Minimal" />
+                  <TextField fx:id="inputMaxRadius" layoutX="279.0" layoutY="147.0" prefHeight="25.0" prefWidth="79.0" promptText="Maximal" />
+                  <Label layoutX="228.0" layoutY="125.0" text="Inclusion radius" />
                </children></AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <padding>

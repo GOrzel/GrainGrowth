@@ -14,19 +14,25 @@ import javafx.scene.paint.Paint;
 public class Cell {
 
     public static final Paint DEFAULT_COLOR = Paint.valueOf(Color.LIGHTGRAY.toString());
+    public static final Paint INCLUSION_COLOR = Paint.valueOf(Color.BLACK.toString());
 
     private Paint backgroundColor;
+    private int phase;
 
     public Cell(){
         this.backgroundColor = DEFAULT_COLOR;
+        this.phase = 0;
     }
 
-    public Cell(Paint backgroundColor) {
+    public Cell(Paint backgroundColor, int phase) {
         this.backgroundColor = backgroundColor;
+        this.phase = phase;
     }
 
     public Cell(Cell cell){
         this.backgroundColor = cell.getBackgroundColor();
+        this.phase = cell.getPhase();
+
     }
 
     public AnchorPane render() {
@@ -36,11 +42,11 @@ public class Cell {
     }
 
     public boolean isEmpty(){
-        return backgroundColor == DEFAULT_COLOR;
+        return backgroundColor == DEFAULT_COLOR && phase == 0;
     }
 
     public boolean isGrain(){
-        return !backgroundColor.toString().equals(DEFAULT_COLOR.toString());
+        return !backgroundColor.toString().equals(DEFAULT_COLOR.toString()) && phase == 0;
     }
 
     public Paint getBackgroundColor() {
@@ -49,5 +55,13 @@ public class Cell {
 
     public void setBackgroundColor(Paint backgroundColor) {
         this.backgroundColor = backgroundColor;
+    }
+
+    public int getPhase() {
+        return phase;
+    }
+
+    public void setPhase(int phase) {
+        this.phase = phase;
     }
 }

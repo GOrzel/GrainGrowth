@@ -30,7 +30,7 @@ public class Space {
     private Cell originState[][];
 
 
-    public Space(int height, int width, int seedsAmount) {
+    public Space(int height, int width, int seedsAmount, int inclusionsAmount, int minRadius, int maxRadius) {
         this.height = height;
         this.width = width;
         cells = new Cell[width][height];
@@ -39,6 +39,7 @@ public class Space {
                 cells[x][y] = new Cell();
             }
         }
+        prepareInclusions(inclusionsAmount, minRadius, maxRadius);
         prepareSeeds(seedsAmount);
         //For the RESET function
         this.originState = copyArray(cells);
@@ -70,14 +71,35 @@ public class Space {
         int x;
         int y;
         for (int i = 0; i < seedsAmount; ) {
-            x = RNG.nextInt(width);
-            y = RNG.nextInt(height);
+            x = getRandomNumber(width);
+            y = getRandomNumber(height);
             color = generateRandomColor();
             if (!activeColors.contains(color) && cells[x][y].isEmpty()) {
                 activeColors.add(color);
                 cells[x][y].setBackgroundColor(color);
                 i++;
             }
+        }
+    }
+
+    private void prepareInclusions(int inclusionsAmount, int minRadius, int maxRadius) {
+        int x;
+        int y;
+        int radius;
+        for (int counter = 0; counter < inclusionsAmount; ) {
+            x = getRandomNumber(width);
+            y = getRandomNumber(height);
+            radius = minRadius + getRandomNumber(maxRadius - minRadius);
+
+            for (int i = x - radius; i <= x + radius; i++) {
+                for (int j = y - radius; j <= y + radius; j++) {
+                    if (isInCircle(radius, Math.abs(x - i), Math.abs(y - j)) && i >= 0 && j >= 0 && i < width && j < height) {
+                        cells[i][j].setPhase(1);
+                        cells[i][j].setBackgroundColor(Cell.INCLUSION_COLOR);
+                    }
+                }
+            }
+            counter++;
         }
     }
 
@@ -198,7 +220,7 @@ public class Space {
 
     }
 
-    public void saveToBitmap() throws IOException{
+    public void saveToBitmap() throws IOException {
         WritableImage snapshot = this.render().snapshot(new SnapshotParameters(), null);
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         File file = new File("bitmap.bmp");

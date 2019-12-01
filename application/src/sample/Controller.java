@@ -40,6 +40,15 @@ public class Controller {
     private TextField inputSeedsAmount;
 
     @FXML
+    private TextField inputInclusionsAmount;
+
+    @FXML
+    private TextField inputMinRadius;
+
+    @FXML
+    private TextField inputMaxRadius;
+
+    @FXML
     private AnchorPane spaceDisplay;
 
     @FXML
@@ -47,7 +56,10 @@ public class Controller {
         int spaceHeight = Integer.parseInt(inputSpaceHeight.getText());
         int spaceWidth = Integer.parseInt(inputSpaceWidth.getText());
         int seedsAmount = Integer.parseInt(inputSeedsAmount.getText());
-        space = new Space(spaceHeight, spaceWidth, seedsAmount);
+        int inclusionsAmount = Integer.parseInt(inputInclusionsAmount.getText());
+        int minRadius = Integer.parseInt(inputMinRadius.getText());
+        int maxRadius = Integer.parseInt(inputMaxRadius.getText());
+        space = new Space(spaceHeight, spaceWidth, seedsAmount, inclusionsAmount, minRadius, maxRadius);
         renderView();
     }
 

@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -31,8 +32,8 @@
                   <TextField fx:id="inputSeedsAmount" layoutX="14.0" layoutY="108.0" prefHeight="25.0" prefWidth="163.0" promptText="Amount of grain seeds" />
                   <Button layoutX="236.0" layoutY="220.0" mnemonicParsing="false" onAction="#nextStep" prefHeight="25.0" prefWidth="102.0" text="Next Step" />
                   <ComboBox fx:id="selectNeighbourhood" layoutX="13.0" layoutY="220.0" prefHeight="25.0" prefWidth="163.0" promptText="Neighbourhood" />
-                  <ComboBox fx:id="selectBoundaryCondition" layoutX="13.0" layoutY="261.0" prefHeight="25.0" prefWidth="163.0" promptText="Boundary Condition" />
-                  <Button layoutX="236.0" layoutY="261.0" mnemonicParsing="false" onAction="#resetSpace" prefHeight="25.0" prefWidth="102.0" text="Reset" />
+                  <ComboBox fx:id="selectBoundaryCondition" layoutX="14.0" layoutY="288.0" prefHeight="25.0" prefWidth="163.0" promptText="Boundary Condition" />
+                  <Button layoutX="237.0" layoutY="288.0" mnemonicParsing="false" onAction="#resetSpace" prefHeight="25.0" prefWidth="102.0" text="Reset" />
                   <Button layoutX="55.0" layoutY="325.0" mnemonicParsing="false" onAction="#play" prefHeight="25.0" prefWidth="102.0" text="Play" />
                   <Button layoutX="190.0" layoutY="325.0" mnemonicParsing="false" onAction="#stop" prefHeight="25.0" prefWidth="102.0" text="Stop" />
                   <Separator layoutY="362.0" prefHeight="3.0" prefWidth="372.0" />
@@ -53,6 +54,8 @@
                   <TextField fx:id="inputMinRadius" layoutX="190.0" layoutY="147.0" prefHeight="25.0" prefWidth="79.0" promptText="Minimal" />
                   <TextField fx:id="inputMaxRadius" layoutX="279.0" layoutY="147.0" prefHeight="25.0" prefWidth="79.0" promptText="Maximal" />
                   <Label layoutX="228.0" layoutY="125.0" text="Inclusion radius" />
+                  <CheckBox fx:id="inputIsGCMode" layoutX="13.0" layoutY="257.0" mnemonicParsing="false" text="Use Grain Curvature mode" />
+                  <TextField fx:id="inputGCChangeChance" layoutX="176.0" layoutY="253.0" promptText="Change chance" />
                </children></AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <padding>

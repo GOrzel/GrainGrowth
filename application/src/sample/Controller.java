@@ -1,25 +1,20 @@
 package sample;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
-import sample.structures.Cell;
 import sample.structures.Space;
 import sample.utils.BoundaryConditions;
 import sample.utils.Neighbourhoods;
 import sample.utils.SimulationParameters;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -52,6 +47,12 @@ public class Controller {
     private AnchorPane spaceDisplay;
 
     @FXML
+    private CheckBox inputIsGCMode;
+
+    @FXML
+    private TextField inputGCChangeChance;
+
+    @FXML
     private void generateSpace() {
         int spaceHeight = Integer.parseInt(inputSpaceHeight.getText());
         int spaceWidth = Integer.parseInt(inputSpaceWidth.getText());
@@ -74,25 +75,42 @@ public class Controller {
         selectNeighbourhood.getItems().removeAll(selectNeighbourhood.getItems());
         selectNeighbourhood.getItems().addAll(
                 Arrays.stream(Neighbourhoods.Neighbourhood.values())
+                        .filter(Neighbourhoods.Neighbourhood::isForNormalMode)
                         .map(Neighbourhoods.Neighbourhood::name)
                         .collect(Collectors.toList()));
+        selectNeighbourhood.setValue(Neighbourhoods.Neighbourhood.VON_NEUMANN.name());
 
         selectBoundaryCondition.getItems().removeAll(selectBoundaryCondition.getItems());
         selectBoundaryCondition.getItems().addAll(
                 Arrays.stream(BoundaryConditions.BoundaryCondition.values())
                         .map(BoundaryConditions.BoundaryCondition::name)
                         .collect(Collectors.toList()));
+        selectBoundaryCondition.setValue(BoundaryConditions.BoundaryCondition.PERIODIC.name());
+
+        inputIsGCMode.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                selectNeighbourhood.setDisable(newValue);
+            }
+        });
+
     }
 
     @FXML
     private void nextStep() throws Exception {
         Neighbourhoods.Neighbourhood neighbourhood;
         BoundaryConditions.BoundaryCondition boundaryCondition;
+        boolean isGCMode;
+        int gCChangeChance;
 
         neighbourhood = Neighbourhoods.Neighbourhood.valueOf(selectNeighbourhood.getValue());
         boundaryCondition = BoundaryConditions.BoundaryCondition.valueOf(selectBoundaryCondition.getValue());
+        isGCMode = inputIsGCMode.isSelected();
+        gCChangeChance= Integer.valueOf(inputGCChangeChance.getText());
         params.setNeighbourhood(neighbourhood);
         params.setBoundaryCondition(boundaryCondition);
+        params.setGCMode(isGCMode);
+        params.setGCChangeChance(gCChangeChance);
 
         this.space.nextStep(params);
         renderView();

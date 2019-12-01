@@ -5,6 +5,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
+import javafx.util.Pair;
 import sample.exceptions.NoBoundaryConditionSet;
 import sample.exceptions.WrongCoordinatesException;
 import sample.utils.BoundaryConditions;
@@ -111,15 +112,50 @@ public class Space {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (cells[x][y].getBackgroundColor().equals(Cell.DEFAULT_COLOR)) {
-                    neighbours = getNeighbourGrainsCounted(x, y, params);
-                    nextIteration[x][y].setBackgroundColor(getMostPopularColor(neighbours));
+                    if (params.isGCMode()) {
+                        Pair<Integer, Paint> strongestNeighbour;
+                        //rule 1
+                        params.setNeighbourhood(Neighbourhoods.Neighbourhood.MOORE);
+                        neighbours = getNeighbourGrainsCounted(x, y, params);
+                        strongestNeighbour = getMostPopularColor(neighbours);
+                        if (strongestNeighbour.getKey() >= 5) {
+                            nextIteration[x][y].setBackgroundColor(strongestNeighbour.getValue());
+                            continue;
+                        }
+                        //rule 2
+                        params.setNeighbourhood(Neighbourhoods.Neighbourhood.NEAREST_MOORE);
+                        neighbours = getNeighbourGrainsCounted(x, y, params);
+                        strongestNeighbour = getMostPopularColor(neighbours);
+                        if (strongestNeighbour.getKey() >= 3) {
+                            nextIteration[x][y].setBackgroundColor(strongestNeighbour.getValue());
+                            continue;
+                        }
+                        //rule 3
+                        params.setNeighbourhood(Neighbourhoods.Neighbourhood.FURTHEST_MOORE);
+                        neighbours = getNeighbourGrainsCounted(x, y, params);
+                        strongestNeighbour = getMostPopularColor(neighbours);
+                        if (strongestNeighbour.getKey() >= 3) {
+                            nextIteration[x][y].setBackgroundColor(strongestNeighbour.getValue());
+                            continue;
+                        }
+                        //rule 4
+                        params.setNeighbourhood(Neighbourhoods.Neighbourhood.MOORE);
+                        neighbours = getNeighbourGrainsCounted(x, y, params);
+                        strongestNeighbour = getMostPopularColor(neighbours);
+                        if (getRandomNumber(100) < params.getGCChangeChance()) {
+                            nextIteration[x][y].setBackgroundColor(strongestNeighbour.getValue());
+                        }
+                    } else {
+                        neighbours = getNeighbourGrainsCounted(x, y, params);
+                        nextIteration[x][y].setBackgroundColor(getMostPopularColor(neighbours).getValue());
+                    }
                 }
             }
         }
         this.cells = nextIteration;
     }
 
-    private Paint getMostPopularColor(HashMap<Paint, Integer> neighbours) {
+    private Pair<Integer, Paint> getMostPopularColor(HashMap<Paint, Integer> neighbours) {
         int max = 0;
         ArrayList<Paint> candidates = new ArrayList<>();
         for (Integer count : neighbours.values())
@@ -129,8 +165,8 @@ public class Space {
             if (a.getValue() >= max)
                 candidates.add(a.getKey());
         }
-        if (candidates.size() == 0) return Cell.DEFAULT_COLOR;
-        return candidates.get(getRandomNumber(candidates.size()));
+        if (candidates.size() == 0) return new Pair<>(max, Cell.DEFAULT_COLOR);
+        return new Pair<>(max, candidates.get(getRandomNumber(candidates.size())));
     }
 
     private HashMap<Paint, Integer> getNeighbourGrainsCounted(int x, int y, SimulationParameters params) throws Exception {

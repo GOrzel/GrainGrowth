@@ -1,6 +1,8 @@
 package sample.structures;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -15,6 +17,8 @@ public class Cell {
 
     public static final Paint DEFAULT_COLOR = Paint.valueOf(Color.LIGHTGRAY.toString());
     public static final Paint INCLUSION_COLOR = Paint.valueOf(Color.BLACK.toString());
+    public static final Paint DP_STRUCTURE_COLOR = Paint.valueOf(Color.MAGENTA.toString());
+    public static final int INCLUSION_PHASE = 1;
 
     private Paint backgroundColor;
     private int phase;
@@ -42,10 +46,10 @@ public class Cell {
     }
 
     public boolean isEmpty(){
-        return backgroundColor == DEFAULT_COLOR && phase == 0;
+        return backgroundColor == DEFAULT_COLOR;
     }
 
-    public boolean isGrain(){
+    public boolean isActivePhaseGrain(){
         return !backgroundColor.toString().equals(DEFAULT_COLOR.toString()) && phase == 0;
     }
 

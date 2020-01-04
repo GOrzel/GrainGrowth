@@ -4,11 +4,13 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import sample.structures.Space;
 import sample.utils.BoundaryConditions;
@@ -65,6 +67,14 @@ public class Controller {
     }
 
     @FXML
+    private void addSeeds(){
+        System.out.println("addSeeds");
+        int seedsAmount = Integer.parseInt(inputSeedsAmount.getText());
+        space.prepareSeeds(seedsAmount);
+        renderView();
+    }
+
+    @FXML
     private ComboBox<String> selectNeighbourhood;
     @FXML
     private ComboBox<String> selectBoundaryCondition;
@@ -91,6 +101,8 @@ public class Controller {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 selectNeighbourhood.setDisable(newValue);
+                renderView();
+//todo remove render from here
             }
         });
 
@@ -114,6 +126,11 @@ public class Controller {
 
         this.space.nextStep(params);
         renderView();
+    }
+
+    @FXML
+    private void shiftGrainsPhase(){
+        space.shiftGrainsPhase();
     }
 
     @FXML
@@ -163,6 +180,7 @@ public class Controller {
         spaceDisplay.getChildren().clear();
         spaceDisplay.getChildren().add(this.space.render());
     }
+
 
     @FXML
     private void saveToCsv() throws IOException {

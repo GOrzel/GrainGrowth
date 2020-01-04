@@ -8,7 +8,7 @@ public class SimulationParameters {
     private Neighbourhoods.Neighbourhood neighbourhood;
     private BoundaryConditions.BoundaryCondition boundaryCondition;
     private boolean isGCMode;
-    int GCChangeChance;
+    private int GCChangeChance;
 
     public SimulationParameters() {
     }

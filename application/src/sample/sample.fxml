@@ -56,6 +56,8 @@
                   <Label layoutX="228.0" layoutY="125.0" text="Inclusion radius" />
                   <CheckBox fx:id="inputIsGCMode" layoutX="14.0" layoutY="257.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="163.0" text="Use Grain Curvature mode" />
                   <TextField fx:id="inputGCChangeChance" layoutX="237.0" layoutY="253.0" prefHeight="25.0" prefWidth="102.0" promptText="Change chance" />
+                  <Button layoutX="237.0" layoutY="72.0" mnemonicParsing="false" onAction="#addSeeds" prefHeight="25.0" prefWidth="102.0" text="Add Seeds" />
+                  <Button layoutX="230.0" layoutY="516.0" mnemonicParsing="false" onAction="#shiftGrainsPhase" text="shiftGrainsPhase" />
                </children></AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <padding>

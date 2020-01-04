@@ -1,8 +1,10 @@
 package sample.structures;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.EventHandler;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.util.Pair;
@@ -61,13 +63,19 @@ public class Space {
                 view.getChildren().add(temp);
             }
         }
+        view.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) throws RuntimeException {
+                removeGrain(mouseEvent.getX(),mouseEvent.getY());
+                mouseEvent.consume();
+            }
+        });
 
         return view;
     }
 
-    private void prepareSeeds(int seedsAmount) {
+    public void prepareSeeds(int seedsAmount) {
         ArrayList<Paint> activeColors = new ArrayList<>();
-        Random RNG = new Random();
         Paint color;
         int x;
         int y;
@@ -79,6 +87,17 @@ public class Space {
                 activeColors.add(color);
                 cells[x][y].setBackgroundColor(color);
                 i++;
+            }
+        }
+    }
+
+    public void shiftGrainsPhase(){
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if(cells[x][y].isActivePhaseGrain())
+//                    cells[x][y].setBackgroundColor(Cell.DP_STRUCTURE_COLOR);
+                //todo cos z kolorem psuje?
+                    cells[x][y].setPhase(2);
             }
         }
     }
@@ -188,7 +207,7 @@ public class Space {
 
         for (Neighbourhoods.Direction direction : params.getNeighbourhood().getDirections()) {
             neighbour = getNeighbour(xPos, yPos, direction, params.getBoundaryCondition());
-            if (neighbour.isGrain()) {
+            if (neighbour.isActivePhaseGrain()) {
                 neighbours.add(neighbour);
             }
         }
@@ -237,6 +256,42 @@ public class Space {
             default:
                 throw new NoBoundaryConditionSet("Unspecified boundary condition");
         }
+    }
+
+    private Pair<Integer, Integer> getPosition(int xPos, int yPos) throws WrongCoordinatesException {
+        if (xPos < 0) xPos += width;
+        if (yPos < 0) yPos += height;
+        if (xPos >= width) xPos -= width;
+        if (yPos >= height) yPos -= height;
+        return new Pair<>(xPos, yPos);
+    }
+
+    private void removeGrain(double x, double y){
+        int posX = (int) Math.ceil(x/700*height-1);
+        int posY = (int) Math.ceil(y/700*width-1);
+
+        Paint colorToRemove = cells[posX][posY].getBackgroundColor();
+        int radius = 1;
+        boolean didLeftGrain = false;
+        Pair<Integer,Integer> position;
+        while(!didLeftGrain){
+            didLeftGrain = true;
+            for (int i = posX - radius; i <= posX + radius; i++) {
+                    for (int j = posY- radius; j <= posY + radius; j++) {
+                        try {
+                            position = getPosition(i,j);
+                        if (colorToRemove == cells[position.getKey()][position.getValue()].getBackgroundColor()){
+                            didLeftGrain = false;
+                            cells[position.getKey()][position.getValue()].setBackgroundColor(Cell.DEFAULT_COLOR);
+                        }
+                        }catch (WrongCoordinatesException e){
+                            System.out.println(e.getLocalizedMessage());
+                        }
+                    }
+                }
+                radius++;
+        }
+
     }
 
     public void reset() {

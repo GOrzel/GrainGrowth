@@ -181,6 +181,11 @@ public class Controller {
         spaceDisplay.getChildren().add(this.space.render());
     }
 
+    @FXML
+    private void refreshView(){
+        renderView();
+    }
+
 
     @FXML
     private void saveToCsv() throws IOException {

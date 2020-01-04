@@ -43,7 +43,6 @@ public class Space {
             }
         }
         prepareInclusions(inclusionsAmount, minRadius, maxRadius);
-        prepareSeeds(seedsAmount);
         //For the RESET function
         this.originState = copyArray(cells);
     }
@@ -94,10 +93,10 @@ public class Space {
     public void shiftGrainsPhase(){
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                if(cells[x][y].isActivePhaseGrain())
-//                    cells[x][y].setBackgroundColor(Cell.DP_STRUCTURE_COLOR);
-                //todo cos z kolorem psuje?
+                if(cells[x][y].isActivePhaseGrain()) {
+                    cells[x][y].setBackgroundColor(Cell.DP_STRUCTURE_COLOR);
                     cells[x][y].setPhase(2);
+                }
             }
         }
     }

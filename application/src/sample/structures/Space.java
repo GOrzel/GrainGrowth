@@ -31,6 +31,7 @@ public class Space {
     private int width;
     private Cell cells[][];
     private Cell originState[][];
+    private SimulationParameters simParams;
 
 
     public Space(int height, int width, int seedsAmount, int inclusionsAmount, int minRadius, int maxRadius) {
@@ -94,8 +95,17 @@ public class Space {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if(cells[x][y].isActivePhaseGrain()) {
-                    cells[x][y].setBackgroundColor(Cell.DP_STRUCTURE_COLOR);
                     cells[x][y].setPhase(2);
+                }
+            }
+        }
+    }
+
+    public void startSubstructuresGrow(){
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if(cells[x][y].isActivePhaseGrain()) {
+                    cells[x][y].setOldStructure(true);
                 }
             }
         }
@@ -129,7 +139,7 @@ public class Space {
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                if (cells[x][y].getBackgroundColor().equals(Cell.DEFAULT_COLOR)) {
+                if (cells[x][y].isEmpty()) {
                     if (params.isGCMode()) {
                         Pair<Integer, Paint> strongestNeighbour;
                         //rule 1
@@ -293,6 +303,25 @@ public class Space {
 
     }
 
+    public void markBoundaries() throws Exception{
+        Cell nextIteration[][] = copyArray(cells);
+        HashMap<Paint, Integer> neighbours;
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (cells[x][y].isGrain()) {
+                    neighbours = getNeighbourGrainsCounted(x, y, simParams);
+                    if(neighbours.size() >= 2){
+                        nextIteration[x][y].setBoundary(true);
+                        nextIteration[x][y].setBackgroundColor(Cell.BOUNDARY_COLOR);
+                }
+                }
+            }
+        }
+
+        this.cells = nextIteration;
+    }
+
     public void reset() {
         this.cells = copyArray(originState);
         this.height = this.cells[0].length;
@@ -315,5 +344,9 @@ public class Space {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         File file = new File("bitmap.bmp");
         ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", file);
+    }
+
+    public void setSimParams(SimulationParameters simParams) {
+        this.simParams = simParams;
     }
 }

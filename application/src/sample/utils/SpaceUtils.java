@@ -54,6 +54,12 @@ public class SpaceUtils {
         sb.append(array[0].length);
         br.write(sb.toString());
         br.newLine();
+        br.write("Total boundary length: " + countBoundariesLength(array));
+        br.newLine();
+        br.write("Total unique grains: " + countUniqueGrains(array));
+        br.newLine();
+        br.write("Mean grain size: " + array.length*array[0].length/countUniqueGrains(array));
+        br.newLine();
 
         for (int x = 0; x < array.length; x++)
             for (int y = 0; y < array[x].length; y++) {
@@ -66,6 +72,8 @@ public class SpaceUtils {
                 sb.append(cell.getBackgroundColor().toString());
                 sb.append(",");
                 sb.append(cell.getPhase());
+                sb.append(",");
+                sb.append(cell.isBoundary());
                 sb.append(",");
                 br.write(sb.toString());
                 br.newLine();
@@ -83,6 +91,10 @@ public class SpaceUtils {
         int width = Integer.valueOf(sizes[1]);
         Cell cells[][] = new Cell[width][height];
 
+        br.readLine();
+        br.readLine();
+        br.readLine();
+
         String line = br.readLine();
         while (line != null) {
 
@@ -91,14 +103,40 @@ public class SpaceUtils {
             int posY = Integer.valueOf(attr[1]);
             Paint color = Paint.valueOf(attr[2]);
             int phase = Integer.valueOf(attr[3]);
+            boolean isBoundary = Boolean.valueOf(attr[4]);
 
-            cells[posX][posY] = new Cell(color, phase);
+            cells[posX][posY] = new Cell(color, phase, isBoundary);
 
             line = br.readLine();
         }
 
         br.close();
         return cells;
+    }
+
+    private static int countBoundariesLength(Cell array[][]) {
+        int counter = 0;
+        for (int x = 0; x < array.length; x++)
+            for (int y = 0; y < array[x].length; y++) {
+                if (array[x][y].isBoundary()) {
+                    counter++;
+                }
+            }
+        counter /= 2;
+        return counter;
+    }
+
+    private static int countUniqueGrains(Cell array[][]) {
+        int counter = 0;
+        ArrayList<Paint> uniques = new ArrayList<>();
+        for (int x = 0; x < array.length; x++)
+            for (int y = 0; y < array[x].length; y++) {
+                if (array[x][y].isGrain() && !array[x][y].isBoundary() && !uniques.contains(array[x][y].getBackgroundColor())) {
+                    counter++;
+                    uniques.add(array[x][y].getBackgroundColor());
+                }
+            }
+        return counter;
     }
 
     public static boolean isInCircle(int r, int y, int x) {

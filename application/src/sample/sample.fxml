@@ -57,7 +57,9 @@
                   <CheckBox fx:id="inputIsGCMode" layoutX="14.0" layoutY="257.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="163.0" text="Use Grain Curvature mode" />
                   <TextField fx:id="inputGCChangeChance" layoutX="237.0" layoutY="253.0" prefHeight="25.0" prefWidth="102.0" promptText="Change chance" />
                   <Button layoutX="237.0" layoutY="72.0" mnemonicParsing="false" onAction="#addSeeds" prefHeight="25.0" prefWidth="102.0" text="Add Seeds" />
-                  <Button layoutX="230.0" layoutY="516.0" mnemonicParsing="false" onAction="#shiftGrainsPhase" text="Shift Phase" />
+                  <Button layoutX="110.0" layoutY="607.0" mnemonicParsing="false" onAction="#shiftGrainsPhase" prefHeight="25.0" prefWidth="132.0" text="Shift Phase" />
+                  <Button layoutX="111.0" layoutY="526.0" mnemonicParsing="false" onAction="#markBoundaries" prefHeight="25.0" prefWidth="132.0" text="Mark Boundaries" />
+                  <Button layoutX="111.0" layoutY="568.0" mnemonicParsing="false" onAction="#startSubstructuresGrow" prefHeight="25.0" prefWidth="132.0" text="Grow Substructures" />
                </children></AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" onMouseClicked="#refreshView" prefHeight="160.0" prefWidth="100.0">
                <padding>

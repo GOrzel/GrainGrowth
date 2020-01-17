@@ -68,7 +68,6 @@ public class Controller {
 
     @FXML
     private void addSeeds(){
-        System.out.println("addSeeds");
         int seedsAmount = Integer.parseInt(inputSeedsAmount.getText());
         space.prepareSeeds(seedsAmount);
         renderView();
@@ -102,7 +101,6 @@ public class Controller {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 selectNeighbourhood.setDisable(newValue);
                 renderView();
-//todo remove render from here
             }
         });
 
@@ -124,6 +122,7 @@ public class Controller {
         params.setGCMode(isGCMode);
         params.setGCChangeChance(gCChangeChance);
 
+        this.space.setSimParams(params);
         this.space.nextStep(params);
         renderView();
     }
@@ -131,6 +130,17 @@ public class Controller {
     @FXML
     private void shiftGrainsPhase(){
         space.shiftGrainsPhase();
+    }
+
+    @FXML
+    private void startSubstructuresGrow(){
+        space.startSubstructuresGrow();
+    }
+
+    @FXML
+    private void markBoundaries() throws Exception{
+        space.markBoundaries();
+        renderView();
     }
 
     @FXML

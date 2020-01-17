@@ -17,11 +17,13 @@ public class Cell {
 
     public static final Paint DEFAULT_COLOR = Paint.valueOf(Color.LIGHTGRAY.toString());
     public static final Paint INCLUSION_COLOR = Paint.valueOf(Color.BLACK.toString());
-    public static final Paint DP_STRUCTURE_COLOR = Paint.valueOf(Color.MAGENTA.toString());
+    public static final Paint BOUNDARY_COLOR = Paint.valueOf(Color.ORANGE.toString());
     public static final int INCLUSION_PHASE = 1;
 
     private Paint backgroundColor;
     private int phase;
+    private boolean isBoundary;
+    private boolean isOldStructure;
 
     public Cell(){
         this.backgroundColor = DEFAULT_COLOR;
@@ -31,6 +33,12 @@ public class Cell {
     public Cell(Paint backgroundColor, int phase) {
         this.backgroundColor = backgroundColor;
         this.phase = phase;
+    }
+
+    public Cell(Paint backgroundColor, int phase, boolean isBoundary) {
+        this.backgroundColor = backgroundColor;
+        this.phase = phase;
+        this.isBoundary = isBoundary;
     }
 
     public Cell(Cell cell){
@@ -50,7 +58,11 @@ public class Cell {
     }
 
     public boolean isActivePhaseGrain(){
-        return !backgroundColor.toString().equals(DEFAULT_COLOR.toString()) && phase == 0;
+        return !backgroundColor.toString().equals(DEFAULT_COLOR.toString()) && phase == 0 && !isOldStructure;
+    }
+
+    public boolean isGrain(){
+        return !backgroundColor.toString().equals(DEFAULT_COLOR.toString()) && phase != INCLUSION_PHASE;
     }
 
     public Paint getBackgroundColor() {
@@ -67,5 +79,21 @@ public class Cell {
 
     public void setPhase(int phase) {
         this.phase = phase;
+    }
+
+    public boolean isBoundary() {
+        return isBoundary;
+    }
+
+    public void setBoundary(boolean boundary) {
+        isBoundary = boundary;
+    }
+
+    public boolean isOldStructure() {
+        return isOldStructure;
+    }
+
+    public void setOldStructure(boolean oldStructure) {
+        isOldStructure = oldStructure;
     }
 }
